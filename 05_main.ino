@@ -99,7 +99,7 @@ void loop() {
   
   tft.fillScreen(TFT_BLACK);
   int valeurLumiere=analogRead(36);
-  if (valeurLumiere < 500) {
+  if (valeurLumiere < 1200) {
   tft.println("LED STATE : ON");
   tft.print("valeur lum: ");
   tft.println(valeurLumiere);
