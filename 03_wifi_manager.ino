@@ -4,12 +4,14 @@
   ============================================================================
 */
 
+
 class WiFiManager {
   private:
     bool isConnected;
     unsigned long lastConnectionAttempt;
     static const int MAX_CONNECTION_ATTEMPTS = 20;
     static const unsigned long CONNECTION_TIMEOUT = 10000;
+
 
   public:
     WiFiManager() : isConnected(false), lastConnectionAttempt(0) {}
@@ -62,6 +64,7 @@ class WiFiManager {
           DEBUG_PRINTLN("[WiFiManager] Attempting to reconnect...");
           WiFi.begin();
           lastConnectionAttempt = currentTime;
+          
         }
       } else {
         isConnected = true;
