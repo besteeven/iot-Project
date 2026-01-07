@@ -27,10 +27,7 @@
 // INCLUDES - OBLIGATOIRE POUR QUE LES CLASSES SOIENT VISIBLES
 // ============================================================================
 
-#include <Arduino.h>
-#include <WebServer.h>
-#include <WiFi.h>
-#include <ArduinoJson.h>
+
 
 // Note: Les autres fichiers .ino (config, sensor_manager, etc.)
 // seront inclus automatiquement par Arduino IDE
@@ -45,7 +42,7 @@ extern SensorManager sensorManager;
 extern LEDController ledController;
 extern WiFiManager wifiManager;
 extern APIServer apiServer;
-
+TFT_eSPI tft = TFT_eSPI();
 // ============================================================================
 // SETUP - INITIALISATION
 // ============================================================================
@@ -54,6 +51,13 @@ void setup() {
   // Initialiser communication série
   Serial.begin(115200);
   delay(1000);
+  
+  
+  tft.init();
+  tft.setRotation(1);
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_GREEN, TFT_BLACK);
+  tft.setTextSize(2);
   
 
   DEBUG_PRINTLN("Initializing system...");
@@ -82,15 +86,66 @@ void setup() {
   DEBUG_PRINTLN("║          System Ready! 🚀                     ║");
   DEBUG_PRINTLN("╚═══════════════════════════════════════════════╝");
   DEBUG_PRINTLN("");
+  ledController.begin();
+  pinMode(36,INPUT);
 }
 
 // ============================================================================
 // LOOP - BOUCLE PRINCIPALE
 // ============================================================================
-
 void loop() {
+  static bool wasConnected = false;
+  static unsigned long lastDisplayUpdate = 0;
+  
+  tft.fillScreen(TFT_BLACK);
+  int valeurLumiere=analogRead(36);
+  if (valeurLumiere < 500) {
+  tft.println("LED STATE : ON");
+  tft.print("valeur lum: ");
+  tft.println(valeurLumiere);
+  ledController.turnOn();
+  }
+  else {
+  tft.println("LED STATE : OFF");
+  tft.print("valeur lum: ");
+  tft.println(valeurLumiere);
+  ledController.turnOff();
+  }
+
+
+
+
+
+
+
+  
+
+
   // Gérer la connexion WiFi
   wifiManager.handleConnection();
+  
+  bool isConnected = wifiManager.isWiFiConnected();
+  
+  // Actualiser l'écran tous les 1000ms (1 seconde) OU quand le status change
+  if (isConnected != wasConnected || (millis() - lastDisplayUpdate > 1000)) {
+    wasConnected = isConnected;
+    lastDisplayUpdate = millis();
+    
+    //tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_GREEN, TFT_BLACK);
+    tft.setTextSize(2);
+    tft.setCursor(0, 0);
+    
+    if (isConnected) {
+      tft.printf("Connected on the wifi '%s'!\n", WIFI_SSID);
+      tft.printf("IP: %s\n", wifiManager.getIPAddress().c_str());
+      tft.printf("Temp: %.1f C\n", sensorManager.getTemperature());
+      tft.printf("Light: %.0f\n", sensorManager.getLightLevel());
+    } else {
+      tft.printf("Connecting...\n");
+      tft.printf("SSID: %s\n", WIFI_SSID);
+    }
+  }
   
   // Traiter les requêtes API
   apiServer.handleClient();
@@ -105,11 +160,11 @@ void loop() {
       "temperature"
     );
     ledController.checkAndApplyThreshold(
-      sensorManager.getLightLevel(), 
+      sensorManager.getLightLevel(),
       "light"
     );
   }
   
   // Petite pause pour éviter watchdog
-  delay(10);
+  delay(2000);
 }
