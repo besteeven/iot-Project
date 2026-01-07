@@ -1,10 +1,26 @@
-#define WIFI_SSID "YOUR_SSID"              // ← À REMPLACER
-#define WIFI_PASSWORD "YOUR_PASSWORD"      // ← À REMPLACER
+#include <Arduino.h>
+#include <WebServer.h>
+#include <WiFi.h>
+#include <ArduinoJson.h>
+#include <math.h>
+#include <TFT_eSPI.h>
+#include <SPI.h>
+
+extern TFT_eSPI tft;
+
+
+#define WIFI_SSID "iPhone de Michel Steeven"              // ← À REMPLACER
+#define WIFI_PASSWORD "0123456789"      // ← À REMPLACER
+
+
 
 // Exemple:
 // #define WIFI_SSID "MonWiFi"
 // #define WIFI_PASSWORD "MonMotDePasse123"
 
+// ============================================================================
+// CONFIGURATION SERVEUR
+// ============================================================================
 
 #define SERVER_PORT 80
 
@@ -12,10 +28,10 @@
 // GPIO PINS
 // ============================================================================
 
-#define LED_PIN 25              // LED contrôlable
-#define LIGHT_SENSOR_PIN 34     // Capteur lumière (ADC)
-#define TEMP_SENSOR_PIN 32      // Capteur température
-#define BUTTON_UP_PIN 35        // Bouton UP (optionnel)
+#define LED_PIN 32             // LED contrôlable
+#define LIGHT_SENSOR_PIN 27     // Capteur lumière (ADC)
+#define TEMP_SENSOR_PIN 39      // Capteur température
+#define BUTTON_UP_PIN 38        // Bouton UP (optionnel)
 #define BUTTON_DOWN_PIN 37      // Bouton DOWN (optionnel)
 
 // ============================================================================
