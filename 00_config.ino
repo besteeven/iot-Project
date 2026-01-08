@@ -29,7 +29,7 @@ extern TFT_eSPI tft;
 // ============================================================================
 
 #define LED_PIN 32             // LED contrôlable
-#define LIGHT_SENSOR_PIN 27     // Capteur lumière (ADC)
+#define LIGHT_SENSOR_PIN 36     // Capteur lumière (ADC)
 #define TEMP_SENSOR_PIN 39      // Capteur température
 #define BUTTON_UP_PIN 38        // Bouton UP (optionnel)
 #define BUTTON_DOWN_PIN 37      // Bouton DOWN (optionnel)
@@ -38,7 +38,7 @@ extern TFT_eSPI tft;
 // PARAMÈTRES
 // ============================================================================
 
-#define SENSOR_READ_INTERVAL 5000           // Lire les capteurs toutes les 5 secondes
+#define SENSOR_READ_INTERVAL 500          // Lire les capteurs toutes les 0.5 secondes
 #define DEFAULT_LIGHT_THRESHOLD 2048        // Seuil lumière (0-4095)
 #define DEFAULT_TEMP_THRESHOLD 25.0         // Seuil température (°C)
 
