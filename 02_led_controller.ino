@@ -85,6 +85,15 @@ class LEDController {
       }
     }
 
+    void setInverted(String sensorType, bool inverted) {
+  for (int i = 0; i < 2; i++) {
+    if (thresholds[i].sensorType == sensorType) {
+      thresholds[i].inverted = inverted;
+      return;
+    }
+  }
+}
+
     bool isThresholdEnabled(String sensorType) {
       for (int i = 0; i < 2; i++) {
         if (thresholds[i].sensorType == sensorType) {
