@@ -151,8 +151,11 @@ void updateDisplay() {
 void setup() {
   // Initialiser communication série
   Serial.begin(115200);
-  delay(1000);
+  delay(5000);
+  run_all_unit_tests();
+  delay(2000);
   
+
   DEBUG_PRINTLN("\n\n╔═══════════════════════════════════════════════╗");
   DEBUG_PRINTLN("║   IoT Sensor API Server - TTGO T-Display     ║");
   DEBUG_PRINTLN("╚═══════════════════════════════════════════════╝\n");
@@ -224,8 +227,8 @@ void setup() {
   DEBUG_PRINTLN("║          System Ready! 🚀                     ║");
   DEBUG_PRINTLN("║  LED auto-contrôlée par seuil lumière        ║");
   DEBUG_PRINTLN("╚═══════════════════════════════════════════════╝\n");
-  
   delay(2000);
+  run_all_unit_tests();
 }
 
 // ============================================================================
@@ -233,6 +236,8 @@ void setup() {
 // ============================================================================
 
 void loop() {
+
+  
   // 1. Gérer la connexion WiFi
   wifiManager.handleConnection();
   
