@@ -489,17 +489,14 @@ private:
   void handleHistory() {
     setCorsHeaders();
 
-    // Note : Ceci est une version BASIQUE
-    // Pour un vrai historique, il faudrait stocker les données dans SPIFFS ou SD
-    // Ici on renvoie juste les valeurs actuelles comme "historique"
-
+  //ici on renvoit juste la valeur de température e t de lumière en temps réel
     DynamicJsonDocument doc(2048);
 
     // Paramètres optionnels
     String sensorType = server.hasArg("sensor") ? server.arg("sensor") : "all";
     int limit = server.hasArg("limit") ? server.arg("limit").toInt() : 10;
 
-    // Pour cette version simple, on crée un historique fictif
+    // Pour cette version simple, on retourne les valeurs en temps réel
     // En production, il faudrait lire depuis un stockage persistant
     JsonArray history = doc.createNestedArray("history");
 
@@ -507,26 +504,17 @@ private:
     float tempValue = sensorManager->getTemperature();
     float lightValue = sensorManager->getLightLevel();
 
-    // Générer quelques points "historiques" (simulation)
-    for (int i = 0; i < min(limit, 10); i++) {
-      JsonObject point = history.createNestedObject();
-      point["timestamp"] = currentTime - (i * 5000);  // Points espacés de 5s
+    // Créer un seul point avec les valeurs actuelles
+    JsonObject point = history.createNestedObject();
+    point["timestamp"] = currentTime;
 
-      if (sensorType == "all" || sensorType == "temperature") {
-        point["temperature"] = tempValue + (random(-10, 10) / 10.0);
-      }
-
-      if (sensorType == "all" || sensorType == "light") {
-        point["light"] = lightValue + random(-50, 50);
-      }
+    if (sensorType == "all" || sensorType == "temperature") {
+      point["temperature"] = tempValue;
     }
 
-    doc["count"] = history.size();
-    doc["sensorType"] = sensorType;
-    doc["timestamp"] = currentTime;
-
-    // NOTE pour étudiants
-    doc["note"] = "This is a BASIC history endpoint. For production, implement persistent storage (SPIFFS/SD)";
+    if (sensorType == "all" || sensorType == "light") {
+      point["light"] = (int)lightValue;
+    }
 
     String response;
     serializeJson(doc, response);
@@ -535,9 +523,9 @@ private:
     DEBUG_PRINTLN("[APIServer] History requested");
   }
 
-  // ========================================================================
-  // 404 Not Found
-  // ========================================================================
+
+  // en cas de 404 Not Found
+
   void handleNotFound() {
     setCorsHeaders();
 
