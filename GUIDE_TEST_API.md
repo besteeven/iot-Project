@@ -348,7 +348,7 @@ curl http://192.168.1.100/api/history
 {
   "history": [
     {
-      "timestamp": 1234567890,
+      "timestamp": 1179835,
       "temperature": 24.5,
       "light": 1823
     }
@@ -356,7 +356,7 @@ curl http://192.168.1.100/api/history
 }
 ```
 
-**Note** : Endpoint basique pour récupérer l'historique. Prévu pour statistiques dans app Flutter.
+ Cet endpoint retourne les valeurs **actuelles** des capteurs (température et lumière) en temps réel dans un format "historique".
 
 ---
 
@@ -451,6 +451,8 @@ http://192.168.1.100/api/device/info
 ```
 http://192.168.1.100/api/history
 ```
+
+---
 
 ## Dépannage
 
