@@ -1,16 +1,4 @@
-/*
-  ============================================================================
-  API SERVER - VERSION AMÉLIORÉE POUR FLUTTER
-  
-  AJOUTS :
-  - Support CORS complet (Flutter Web compatible)
-  - Timestamps sur toutes les données
-  - Endpoint /api/device/info pour localisation
-  - Endpoint /api/history pour statistiques (basique)
-  - Gestion OPTIONS pour preflight requests
-  ============================================================================
-*/
-
+//Gestionnaire de l'API
 class APIServer {
 private:
   WebServer server;
@@ -48,7 +36,7 @@ public:
       handleStatusGet();
     });
 
-    // NOUVEAUX endpoints pour Flutter
+    //  endpoints pour Flutter
     server.on("/api/device/info", HTTP_GET, [this]() {
       handleDeviceInfo();
     });
@@ -139,8 +127,8 @@ private:
       sensorObj["unit"] = (sensor.type == "temperature") ? "°C" : "lux";
       sensorObj["minValue"] = sensor.minValue;
       sensorObj["maxValue"] = sensor.maxValue;
-      sensorObj["timestamp"] = currentTime;     // ← NOUVEAU pour Flutter
-      sensorObj["lastRead"] = sensor.lastRead;  // ← NOUVEAU pour Flutter
+      sensorObj["timestamp"] = currentTime;     //pour Flutter
+      sensorObj["lastRead"] = sensor.lastRead;  //pour Flutter
     }
 
     String response;
@@ -180,8 +168,8 @@ private:
     doc["type"] = sensor.type;
     doc["value"] = sensor.value;
     doc["unit"] = (sensor.type == "temperature") ? "°C" : "lux";
-    doc["timestamp"] = millis();        // ← NOUVEAU pour Flutter
-    doc["lastRead"] = sensor.lastRead;  // ← NOUVEAU pour Flutter
+    doc["timestamp"] = millis();        // pour Flutter
+    doc["lastRead"] = sensor.lastRead;  //  pour Flutter
     doc["minValue"] = sensor.minValue;
     doc["maxValue"] = sensor.maxValue;
 
@@ -272,7 +260,7 @@ private:
     DynamicJsonDocument respDoc(256);
     respDoc["status"] = ledController->getState() ? "on" : "off";
     respDoc["state"] = ledController->getState();
-    respDoc["timestamp"] = millis();  // ← NOUVEAU
+    respDoc["timestamp"] = millis();  // 
     String response;
     serializeJson(respDoc, response);
     server.send(200, "application/json", response);
@@ -367,7 +355,7 @@ private:
     lightObj["threshold"] = lightThreshold.threshold;
     lightObj["enabled"] = lightThreshold.enabled;
 
-    doc["timestamp"] = millis();  // ← NOUVEAU
+    doc["timestamp"] = millis();  
 
     String response;
     serializeJson(doc, response);
@@ -426,7 +414,7 @@ private:
     respDoc["sensorType"] = config.sensorType;
     respDoc["threshold"] = config.threshold;
     respDoc["enabled"] = config.enabled;
-    respDoc["timestamp"] = millis();  // ← NOUVEAU
+    respDoc["timestamp"] = millis();  
     String response;
     serializeJson(respDoc, response);
     server.send(200, "application/json", response);
@@ -442,7 +430,7 @@ private:
     doc["uptime"] = millis();
     doc["ledStatus"] = ledController->getState() ? "on" : "off";
     doc["sensorCount"] = sensorManager->getSensorCount();
-    doc["freeHeap"] = ESP.getFreeHeap();  // ← NOUVEAU (mémoire disponible)
+    doc["freeHeap"] = ESP.getFreeHeap();  
     doc["timestamp"] = millis();
 
     String response;
@@ -451,7 +439,7 @@ private:
   }
 
   // ========================================================================
-  // NOUVEAU : GET /api/device/info (pour Flutter - localisation)
+  // GET /api/device/info (pour Flutter - localisation)
   // ========================================================================
   void handleDeviceInfo() {
     setCorsHeaders();
@@ -496,7 +484,7 @@ private:
   }
 
   // ========================================================================
-  // NOUVEAU : GET /api/history (basique - pour statistiques Flutter)
+  // GET /api/history (basique - pour statistiques Flutter)
   // ========================================================================
   void handleHistory() {
     setCorsHeaders();
