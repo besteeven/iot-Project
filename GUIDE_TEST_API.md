@@ -452,59 +452,6 @@ http://192.168.1.100/api/device/info
 http://192.168.1.100/api/history
 ```
 
----
-
-## Test avec Postman (Alternative graphique)
-
-### Importer dans Postman :
-
-**Collection JSON** :
-```json
-{
-  "info": {
-    "name": "ESP32 TTGO API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Get All Sensors",
-      "request": {
-        "method": "GET",
-        "url": "http://192.168.1.100/api/sensors"
-      }
-    },
-    {
-      "name": "Get Temperature",
-      "request": {
-        "method": "GET",
-        "url": "http://192.168.1.100/api/sensor?id=0"
-      }
-    },
-    {
-      "name": "Get Light",
-      "request": {
-        "method": "GET",
-        "url": "http://192.168.1.100/api/sensor?id=1"
-      }
-    },
-    {
-      "name": "LED ON",
-      "request": {
-        "method": "POST",
-        "url": "http://192.168.1.100/api/led",
-        "header": [{"key": "Content-Type", "value": "application/json"}],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"action\":\"on\"}"
-        }
-      }
-    }
-  ]
-}
-```
-
----
-
 ## Dépannage
 
 ### Erreur : `curl: (7) Failed to connect`
