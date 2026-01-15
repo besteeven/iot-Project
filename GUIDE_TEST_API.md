@@ -1,8 +1,11 @@
-# 🧪 GUIDE RAPIDE - Tester vos API
+# Guide de test de l'API RESTful ESP32
 
-## 📋 Prérequis
+Ce guide complète le README.md et vous permet de tester tous les endpoints de l'API de manière pratique.
+Consultez le README.md pour l'installation, la configuration et l'architecture du projet.
 
-### 1. Trouver l'IP de votre ESP32
+## Prérequis
+
+### Trouver l'IP de votre ESP32
 
 **Méthode 1 - Écran TTGO** :
 ```
@@ -17,17 +20,17 @@ IP: 192.168.1.100  ← Votre IP
 
 ---
 
-## ⚡ TESTS RAPIDES (Copier-Coller)
+## TESTS RAPIDES (Copier-Coller)
 
 > **IMPORTANT** : Remplacez `192.168.1.100` par votre vraie IP !
 
-### 1️⃣ Test connexion - Vérifier que l'API répond
+### 1. Test connexion - Vérifier que l'API répond
 
 ```bash
 curl http://192.168.1.100/api/status
 ```
 
-**✅ Résultat attendu** :
+**Résultat attendu** :
 ```json
 {
   "uptime": 123456,
@@ -38,13 +41,13 @@ curl http://192.168.1.100/api/status
 
 ---
 
-### 2️⃣ Lire TOUS les capteurs (température + lumière)
+### 2. Lire TOUS les capteurs (température + lumière)
 
 ```bash
 curl http://192.168.1.100/api/sensors
 ```
 
-**✅ Résultat attendu** :
+**Résultat attendu** :
 ```json
 {
   "sensors": [
@@ -72,13 +75,13 @@ curl http://192.168.1.100/api/sensors
 
 ---
 
-### 3️⃣ Lire TEMPÉRATURE uniquement
+### 3. Lire TEMPÉRATURE uniquement
 
 ```bash
 curl http://192.168.1.100/api/sensor?id=0
 ```
 
-**✅ Résultat attendu** :
+**Résultat attendu** :
 ```json
 {
   "id": 0,
@@ -89,17 +92,17 @@ curl http://192.168.1.100/api/sensor?id=0
 }
 ```
 
-**🧪 Test** : Chauffez la thermistance avec vos doigts → Valeur augmente
+**Test** : Chauffez la thermistance avec vos doigts pour voir la valeur augmenter.
 
 ---
 
-### 4️⃣ Lire LUMIÈRE uniquement
+### 4. Lire LUMIÈRE uniquement
 
 ```bash
 curl http://192.168.1.100/api/sensor?id=1
 ```
 
-**✅ Résultat attendu** :
+**Résultat attendu** :
 ```json
 {
   "id": 1,
@@ -110,17 +113,17 @@ curl http://192.168.1.100/api/sensor?id=1
 }
 ```
 
-**🧪 Test** : Couvrez le capteur → Valeur diminue
+**Test** : Couvrez le capteur pour voir la valeur diminuer.
 
 ---
 
-### 5️⃣ État de la LED
+### 5. État de la LED
 
 ```bash
 curl http://192.168.1.100/api/led
 ```
 
-**✅ Résultat si éteinte** :
+**Résultat si éteinte** :
 ```json
 {
   "status": "off",
@@ -128,7 +131,7 @@ curl http://192.168.1.100/api/led
 }
 ```
 
-**✅ Résultat si allumée** :
+**Résultat si allumée** :
 ```json
 {
   "status": "on",
@@ -137,83 +140,115 @@ curl http://192.168.1.100/api/led
 ```
 
 ---
-### Passer en manuel
-curl -s -X POST http://172.20.10.4/api/mode \
-  -H "Content-Type: application/json" \
-  -d '{"mode":"manual"}' | jq
 
----
-### Toggle LED (Allumer/Éteindre)
-curl -s -X POST http://172.20.10.4/api/led \
-  -H "Content-Type: application/json" \
-  -d '{"action":"toggle"}' | jq
-
----
-### Repasser en auto
-curl -s -X POST http://172.20.10.4/api/mode \
-  -H "Content-Type: application/json" \
-  -d '{"mode":"auto"}' | jq
-
----
-
-
-### 6️⃣ Allumer la LED
+### 6. Vérifier le mode actuel
 
 ```bash
-curl -X POST http://172.20.10.2/api/led \
+curl http://192.168.1.100/api/mode
+```
+
+**Résultat** :
+```json
+{
+  "mode": "auto"
+}
+```
+
+**Note** : Le mode par défaut est "auto" (seuils automatiques activés).
+
+---
+
+### 7. Passer en mode manuel
+
+```bash
+curl -X POST http://192.168.1.100/api/mode \
+  -H "Content-Type: application/json" \
+  -d '{"mode":"manual"}'
+```
+
+**Résultat** :
+```json
+{
+  "mode": "manual"
+}
+```
+
+---
+
+### 8. Allumer la LED
+
+```bash
+curl -X POST http://192.168.1.100/api/led \
   -H "Content-Type: application/json" \
   -d '{"action":"on"}'
 ```
 
-**✅ Résultat** :
+**Résultat** :
 ```json
 {
   "status": "on"
 }
 ```
 
-**🔦 Vérification** : La LED verte physique doit s'allumer !
+**Vérification** : La LED verte physique doit s'allumer.
 
 ---
 
-### 7️⃣ Éteindre la LED
+### 9. Éteindre la LED
 
 ```bash
-curl -X POST http://172.20.10.2/api/led \
+curl -X POST http://192.168.1.100/api/led \
   -H "Content-Type: application/json" \
   -d '{"action":"off"}'
 ```
 
-**✅ Résultat** :
+**Résultat** :
 ```json
 {
   "status": "off"
 }
 ```
 
-**💡 Vérification** : La LED verte s'éteint
+**Vérification** : La LED verte s'éteint.
 
 ---
 
-### 8️⃣ Toggle LED (inverser l'état)
+### 10. Toggle LED (inverser l'état)
 
 ```bash
-curl -X POST http://172.20.10.2/api/led \
+curl -X POST http://192.168.1.100/api/led \
   -H "Content-Type: application/json" \
   -d '{"action":"toggle"}'
 ```
 
-**Test amusant** : Lancez cette commande plusieurs fois → La LED clignote !
+**Note** : Lancez cette commande plusieurs fois pour faire clignoter la LED.
 
 ---
 
-### 9️⃣ Voir les seuils configurés
+### 11. Repasser en mode automatique
 
 ```bash
-curl http://172.20.10.2/api/thresholds
+curl -X POST http://192.168.1.100/api/mode \
+  -H "Content-Type: application/json" \
+  -d '{"mode":"auto"}'
 ```
 
-**✅ Résultat attendu** :
+**Résultat** :
+```json
+{
+  "mode": "auto"
+}
+```
+
+---
+
+### 12. Voir les seuils configurés
+
+```bash
+curl http://192.168.1.100/api/thresholds
+```
+
+**Résultat attendu** :
 ```json
 {
   "thresholds": [
@@ -235,7 +270,7 @@ curl http://172.20.10.2/api/thresholds
 
 ---
 
-### 🔟 Modifier le seuil de lumière
+### 13. Modifier le seuil de lumière
 
 ```bash
 curl -X POST http://192.168.1.100/api/thresholds \
@@ -243,7 +278,7 @@ curl -X POST http://192.168.1.100/api/thresholds \
   -d '{"sensorType":"light","threshold":3000,"enabled":true}'
 ```
 
-**✅ Résultat** :
+**Résultat** :
 ```json
 {
   "sensorType": "light",
@@ -256,7 +291,7 @@ curl -X POST http://192.168.1.100/api/thresholds \
 
 ---
 
-### 1️⃣1️⃣ Activer seuil de température
+### 14. Activer seuil de température
 
 ```bash
 curl -X POST http://192.168.1.100/api/thresholds \
@@ -266,11 +301,11 @@ curl -X POST http://192.168.1.100/api/thresholds \
 
 **Effet** : LED s'allume si température > 28°C
 
-**🧪 Test** : Chauffez la thermistance → LED s'allume !
+**Test** : Chauffez la thermistance pour voir la LED s'allumer.
 
 ---
 
-### 1️⃣2️⃣ Désactiver un seuil
+### 15. Désactiver un seuil
 
 ```bash
 curl -X POST http://192.168.1.100/api/thresholds \
@@ -282,19 +317,62 @@ curl -X POST http://192.168.1.100/api/thresholds \
 
 ---
 
-## 🔄 Tests en boucle (temps réel)
+### 16. Informations du device (endpoint Flutter)
+
+```bash
+curl http://192.168.1.100/api/device/info
+```
+
+**Résultat** :
+```json
+{
+  "deviceId": "ESP32-TTGO",
+  "firmware": "1.0.0",
+  "uptime": 123456,
+  "location": "Salle IoT"
+}
+```
+
+**Note** : Endpoint prévu pour l'intégration avec une application Flutter.
+
+---
+
+### 17. Historique des mesures (endpoint Flutter)
+
+```bash
+curl http://192.168.1.100/api/history
+```
+
+**Résultat** :
+```json
+{
+  "history": [
+    {
+      "timestamp": 1234567890,
+      "temperature": 24.5,
+      "light": 1823
+    }
+  ]
+}
+```
+
+**Note** : Endpoint basique pour récupérer l'historique. Prévu pour statistiques dans app Flutter.
+
+---
+
+## Tests en boucle (temps réel)
 
 ### Surveiller capteurs toutes les 2 secondes
 
 **Linux/Mac** :
 ```bash
-watch -n 2 'curl -s http://192.168.1.100/api/sensors | jq'
+watch -n 2 'curl -s http://192.168.1.100/api/sensors'
 ```
 
 **Windows PowerShell** :
 ```powershell
 while($true) {
-  curl http://192.168.1.100/api/sensors | ConvertFrom-Json | ConvertTo-Json
+  curl http://192.168.1.100/api/sensors
   Start-Sleep -Seconds 2
 }
 ```
@@ -325,7 +403,7 @@ while($true) {
 
 ---
 
-## 🌐 Test depuis navigateur Web
+## Test depuis navigateur Web
 
 Ouvrez votre navigateur et collez ces URLs :
 
@@ -359,9 +437,24 @@ http://192.168.1.100/api/led
 http://192.168.1.100/api/thresholds
 ```
 
+### 7. Mode actuel
+```
+http://192.168.1.100/api/mode
+```
+
+### 8. Informations device
+```
+http://192.168.1.100/api/device/info
+```
+
+### 9. Historique
+```
+http://192.168.1.100/api/history
+```
+
 ---
 
-## 📱 Test avec Postman (Alternative graphique)
+## Test avec Postman (Alternative graphique)
 
 ### Importer dans Postman :
 
@@ -412,7 +505,7 @@ http://192.168.1.100/api/thresholds
 
 ---
 
-## 🐛 Dépannage
+## Dépannage
 
 ### Erreur : `curl: (7) Failed to connect`
 
@@ -434,10 +527,10 @@ ping 192.168.1.100
 
 **Vérification** :
 ```bash
-# Bon ✅
+# Bon
 http://192.168.1.100/api/sensors
 
-# Mauvais ❌
+# Mauvais
 http://192.168.1.100/sensors  # manque /api
 ```
 
@@ -449,12 +542,12 @@ http://192.168.1.100/sensors  # manque /api
 
 **Vérification** :
 ```bash
-# Bon ✅
+# Bon
 curl -X POST http://192.168.1.100/api/led \
   -H "Content-Type: application/json" \
   -d '{"action":"on"}'
 
-# Mauvais ❌ (guillemets manquants)
+# Mauvais (guillemets manquants)
 curl -X POST http://192.168.1.100/api/led \
   -H "Content-Type: application/json" \
   -d '{action:on}'
@@ -476,7 +569,7 @@ curl -X POST http://192.168.1.100/api/led \
 
 ---
 
-## 📊 Valeurs normales attendues
+## Valeurs normales attendues
 
 | Capteur | Condition | Valeur | Note |
 |---------|-----------|--------|------|
@@ -490,7 +583,7 @@ curl -X POST http://192.168.1.100/api/led \
 
 ---
 
-## ✅ Checklist de validation
+## Checklist de validation
 
 ### Tests de base
 - [ ] `GET /api/status` → Retourne uptime
@@ -498,6 +591,13 @@ curl -X POST http://192.168.1.100/api/led \
 - [ ] `GET /api/sensor?id=0` → Température raisonnable
 - [ ] `GET /api/sensor?id=1` → Lumière raisonnable
 - [ ] `GET /api/led` → État LED
+- [ ] `GET /api/mode` → Mode actuel (auto/manual)
+- [ ] `GET /api/device/info` → Info device
+- [ ] `GET /api/history` → Historique mesures
+
+### Tests mode
+- [ ] `POST /api/mode {"mode":"manual"}` → Passe en mode manuel
+- [ ] `POST /api/mode {"mode":"auto"}` → Passe en mode auto
 
 ### Tests LED
 - [ ] `POST /api/led {"action":"on"}` → LED s'allume physiquement
@@ -515,119 +615,23 @@ curl -X POST http://192.168.1.100/api/led \
 
 ---
 
-## 🎓 Pour votre rapport
+## Récapitulatif des endpoints
 
-### Captures à inclure
+| Endpoint | Méthode | Description |
+|----------|---------|-------------|
+| /api/status | GET | État du système |
+| /api/sensors | GET | Tous les capteurs |
+| /api/sensor?id=0 | GET | Température |
+| /api/sensor?id=1 | GET | Lumière |
+| /api/led | GET | État LED |
+| /api/mode | GET | Mode actuel |
+| /api/mode | POST | Changer mode |
+| /api/led | POST | Contrôler LED |
+| /api/thresholds | GET | Lire seuils |
+| /api/thresholds | POST | Modifier seuils |
+| /api/device/info | GET | Info device |
+| /api/history | GET | Historique |
 
-1. **Screenshot curl** des 7 endpoints
-2. **Tableau récapitulatif** :
+**Total : 9 endpoints distincts**
 
-| Endpoint | Méthode | Testé | Résultat |
-|----------|---------|-------|----------|
-| /api/status | GET | ✅ | OK |
-| /api/sensors | GET | ✅ | OK |
-| /api/sensor?id=0 | GET | ✅ | OK |
-| /api/sensor?id=1 | GET | ✅ | OK |
-| /api/led | GET | ✅ | OK |
-| /api/led | POST | ✅ | OK |
-| /api/thresholds | GET | ✅ | OK |
-| /api/thresholds | POST | ✅ | OK |
 
-3. **Photo LED allumée** via API
-4. **Graphique** évolution température/lumière
-
----
-
-## 🚀 Script automatique complet
-
-Sauvegardez dans `test_api.sh` :
-
-```bash
-#!/bin/bash
-IP="192.168.1.100"  # ← CHANGEZ VOTRE IP
-
-echo "=== TEST API ESP32 ==="
-echo ""
-
-echo "1. Status"
-curl -s http://$IP/api/status | jq
-echo ""
-
-echo "2. Capteurs"
-curl -s http://$IP/api/sensors | jq
-echo ""
-
-echo "3. LED ON"
-curl -s -X POST http://$IP/api/led \
-  -H "Content-Type: application/json" \
-  -d '{"action":"on"}' | jq
-sleep 2
-
-echo "4. LED OFF"
-curl -s -X POST http://$IP/api/led \
-  -H "Content-Type: application/json" \
-  -d '{"action":"off"}' | jq
-
-echo ""
-echo "=== TESTS TERMINÉS ==="
-```
-
-**Lancer** :
-```bash
-chmod +x test_api.sh
-./test_api.sh
-```
-
----
-
-## 💡 Astuce : Formater joliment avec jq
-
-**Installer jq** :
-```bash
-# Linux
-sudo apt install jq
-
-# Mac
-brew install jq
-
-# Windows
-choco install jq
-```
-
-**Utiliser** :
-```bash
-curl -s http://192.168.1.100/api/sensors | jq
-# Affiche JSON coloré et indenté
-```
-
----
-
-## 🎯 Commande la plus utile
-
-```bash
-# Surveiller en temps réel (rafraîchissement 2s)
-watch -n 2 'echo "=== CAPTEURS ===" && \
-            curl -s http://192.168.1.100/api/sensors | jq && \
-            echo "" && \
-            echo "=== LED ===" && \
-            curl -s http://192.168.1.100/api/led | jq'
-```
-
-**Résultat** :
-```
-=== CAPTEURS ===
-{
-  "sensors": [
-    { "type": "temperature", "value": 24.5 },
-    { "type": "light", "value": 1823 }
-  ]
-}
-
-=== LED ===
-{
-  "status": "on",
-  "state": true
-}
-```
-
-Bon tests ! 🚀
