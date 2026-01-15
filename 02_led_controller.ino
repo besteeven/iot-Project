@@ -1,13 +1,4 @@
-/*
-  ============================================================================
-  LED CONTROLLER - Contrôle de la LED et gestion des seuils
-  
-  MODIFICATION : Le seuil de lumière utilise une logique INVERSÉE par défaut
-  - Si lumière < seuil (sombre) → LED ON
-  - Si lumière > seuil (lumineux) → LED OFF
-  ============================================================================
-*/
-
+//controleur du led au pin 32
 class LEDController {
 private:
   bool ledState;
@@ -129,7 +120,6 @@ public:
 
   /**
      * Applique le seuil avec support de la logique inversée
-     * 
      * Si inverted = false (température) : LED ON si valeur > seuil
      * Si inverted = true (lumière) : LED ON si valeur < seuil (sombre)
      */
