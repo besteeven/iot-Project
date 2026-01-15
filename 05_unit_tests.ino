@@ -1,13 +1,6 @@
 /*
   ============================================================================
-  UNIT TESTS - Version DÉTAILLÉE (avec traçage d'exécution)
-  
-  Cette version affiche CHAQUE étape d'exécution pour le debugging.
-  
-  Exécution:
-  1. Charger ce code sur l'ESP32
-  2. Ouvrir le moniteur série (115200 baud)
-  3. Voir l'exécution détaillée de chaque test
+  UNIT TESTS avec traçage d'exécution
   ============================================================================
 */
 
@@ -25,15 +18,12 @@ void init_test_serial() {
   
   Serial.println("\n\n");
   Serial.println("╔════════════════════════════════════════╗");
-  Serial.println("║   TESTS UNITAIRES - DÉMARRAGE          ║");
-  Serial.println("║   Avec traçage détaillé                ║");
+  Serial.println("║   TESTS UNITAIRES - START              ║");
   Serial.println("╚════════════════════════════════════════╝");
   Serial.println("");
 }
 
-// ============================================================================
-// MACROS DE TEST - AVEC TRAÇAGE DÉTAILLÉ
-// ============================================================================
+// MACROS DE TEST 
 
 #define TEST(actual, expected, name) \
   do { \
@@ -443,4 +433,3 @@ void run_all_unit_tests() {
   
   print_test_summary();
 }
-
