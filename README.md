@@ -1,5 +1,6 @@
-#iot-Project-  API RESTful IoT - Capteurs TTGO T-Display ESP32
+# API RESTful IoT - Capteurs TTGO T-Display ESP32
 
+Projet universitaire de Master 2 : Implémentation d'une API RESTful sur microcontrôleur ESP32 pour la gestion de capteurs IoT.
 
 ## Auteurs
 
@@ -18,11 +19,12 @@ L'objectif de ce projet est de développer une API RESTful complète sur un micr
 Le projet utilise les composants suivants :
 
 - Microcontrôleur ESP32 (TTGO T-Display) écran TFT intégré
+- Kit électronique Adafruit (réf. 2975)
 - Capteur de température (thermistor 10K)
 - Capteur de lumière (photoresistance)
-- LED contrôlable
+- Écran TFT 135x240 intégré
+- LED contrôlable via transistor
 
-référence du kit: https://www.adafruit.com/product/2975
 ---
 
 ## Fonctionnalités implémentées
@@ -39,7 +41,7 @@ Au-delà des exigences, le projet inclut plusieurs fonctionnalités complémenta
 
 Pour compiler et téléverser le projet, vous aurez besoin de :
 
-- Arduino  IDE
+- Arduino IDE version 1.8.x ou supérieure
 - Carte ESP32 version 3.3.1 ou supérieure (à installer via le Board Manager)
 - Bibliothèques Arduino :
   - ArduinoJson version 6.x (par Benoit Blanchon)
@@ -179,6 +181,8 @@ Couvrez ensuite le capteur de lumière. La LED devrait s'allumer automatiquement
 Le code est organisé de manière modulaire avec chaque composant dans un fichier séparé. Cette architecture permet une maintenance facile et facilite l'ajout de nouvelles fonctionnalités.
 Les fichiers sont numérotées pour donner un ordre de compilation à Arduino (car Arduino compile dans l'ordre alphabétique).
 Un fichier dummy au même nom que le dossier du projet est aussi présent pour éviter que Arduino réclame de créer un nouveau dossier.
+
+**Gestion de la mémoire** : Le projet utilise une allocation statique pour les instances principales et `DynamicJsonDocument` d'ArduinoJson pour les réponses API, avec libération automatique de la mémoire.
 
 ### Fichiers principaux
 
