@@ -190,8 +190,10 @@ void setup() {
   
   sensorManager.readSensors();
   
+  ledController.setThreshold("light", DEFAULT_LIGHT_THRESHOLD);
   ledController.enableThreshold("light");
-  DEBUG_PRINTLN("Light threshold enabled");
+  DEBUG_PRINT("Light threshold set to: ");
+  DEBUG_PRINTLN(DEFAULT_LIGHT_THRESHOLD);
   ledController.checkAndApplyThreshold(sensorManager.getLightLevel(), "light");
   
   tft.println("WiFi...");
@@ -222,7 +224,6 @@ void setup() {
   
   DEBUG_PRINTLN("\nSystem ready!");
   delay(2000);
-  run_all_unit_tests();
 }
 
 // Loop principal
