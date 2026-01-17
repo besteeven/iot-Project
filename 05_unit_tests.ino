@@ -197,7 +197,7 @@ void test_led_controller() {
   
   float thresholdLight = ledController.getThreshold("light");
   Serial.print("  → Seuil lumière défaut: "); Serial.println(thresholdLight);
-  TEST_FLOAT(thresholdLight, 2500.0, 0.1, "Seuil light défaut == 2500.0");
+  TEST_FLOAT(thresholdLight, DEFAULT_LIGHT_THRESHOLD, 0.1, "Seuil light défaut == DEFAULT_LIGHT_THRESHOLD");
   
   ledController.setThreshold("temperature", 28.0);
   Serial.println("  → Appel setThreshold('temperature', 28.0)");
@@ -242,7 +242,7 @@ void test_led_threshold_logic() {
   Serial.println("[GROUPE 1] Mode Manual - Seuil ignoré");
   ledController.setMode("manual");
   ledController.turnOff();
-  ledController.setThreshold("light", 2500.0);
+  ledController.setThreshold("light", DEFAULT_LIGHT_THRESHOLD);
   ledController.enableThreshold("light");
   Serial.println("  → Mode manual, seuil activé, valeur = 1000");
   ledController.checkAndApplyThreshold(1000.0, "light");
@@ -253,9 +253,9 @@ void test_led_threshold_logic() {
   Serial.println("[GROUPE 2] Mode Auto - Seuil lumière bas");
   ledController.setMode("auto");
   ledController.turnOff();
-  ledController.setThreshold("light", 2500.0);
+  ledController.setThreshold("light", DEFAULT_LIGHT_THRESHOLD);
   ledController.enableThreshold("light");
-  Serial.println("  → Mode auto, lumière < 2500 (valeur = 1000)");
+  Serial.println("  → Mode auto, lumière < seuil (valeur = 1000)");
   ledController.checkAndApplyThreshold(1000.0, "light");
   bool autoLowLightState = ledController.getState();
   Serial.print("  → État LED: "); Serial.println(autoLowLightState ? "ON" : "OFF");
@@ -263,9 +263,9 @@ void test_led_threshold_logic() {
   
   Serial.println("[GROUPE 3] Mode Auto - Seuil lumière haut");
   ledController.setMode("auto");
-  ledController.setThreshold("light", 2500.0);
+  ledController.setThreshold("light", DEFAULT_LIGHT_THRESHOLD);
   ledController.enableThreshold("light");
-  Serial.println("  → Mode auto, lumière > 2500 (valeur = 3500)");
+  Serial.println("  → Mode auto, lumière > seuil (valeur = 3500)");
   ledController.checkAndApplyThreshold(3500.0, "light");
   bool autoHighLightState = ledController.getState();
   Serial.print("  → État LED: "); Serial.println(autoHighLightState ? "ON" : "OFF");
@@ -295,7 +295,7 @@ void test_led_threshold_logic() {
   Serial.println("[GROUPE 6] Seuil désactivé");
   ledController.setMode("auto");
   ledController.turnOff();
-  ledController.setThreshold("light", 2500.0);
+  ledController.setThreshold("light", DEFAULT_LIGHT_THRESHOLD);
   ledController.disableThreshold("light");
   Serial.println("  → Seuil désactivé, lumière basse");
   ledController.checkAndApplyThreshold(1000.0, "light");
